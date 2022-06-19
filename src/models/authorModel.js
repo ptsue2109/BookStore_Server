@@ -5,6 +5,6 @@ const Author = new mongoose.Schema({
     image:{type: String},
     slug: {type: String,slug: 'authorName'},
     desc: {type: String}
-})
+},{timestamps:true})
 mongoose.plugin(slug);
 module.exports = mongoose.model("Author", Author);

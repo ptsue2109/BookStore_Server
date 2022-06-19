@@ -85,11 +85,11 @@ export const update = async (req, res) => {
   const condition = { _id: req.params.id };
   const update = req.body;
   try {
-    const product = await Product.findOneAndUpdate(condition, update).exec();
+    const product = await Product.findOneAndUpdate(condition, update,{new: true}).exec();
     res.json(product);
   } catch (error) {
     res.status(400).json({
-      error: "update sản phẩm không thành công",
+      error: `update sản phẩm không thành công ,${error}`,
     });
   }
 };

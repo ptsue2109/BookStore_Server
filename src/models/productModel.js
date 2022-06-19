@@ -15,10 +15,8 @@ const productSchema = new mongoose.Schema({
     desc: {type: String},
     categoryId: {type: ObjectId, ref: "Category"},
     slug: {type: String, slug: 'name', unique: true},
-    stock : {type: Number, required: true},
-    // quantity:{type:Number,default:0},
-    // price:{type:Number,default:0}
-})
+    stock : {type: Number, required: true}
+},{timestamps: true})
 
 mongoose.plugin(slug);
 module.exports = mongoose.model("Product", productSchema);

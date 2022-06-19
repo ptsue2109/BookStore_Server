@@ -69,10 +69,12 @@ export const getOrderByOrderCode = async (req, res) => {
   try {
     const cart = await Order.findOne({
       orderCode: req.params.orderCode,
-    }).exec();
+    })
+      .populate("products.products")
+      .exec();
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).send("loading fail");
+    res.status(500).send("loading fail" + error);
   }
 };
 
@@ -98,42 +100,37 @@ export const getOrderById = async (req, res) => {
 };
 
 export const changeOrder = async (req, res) => {
-  const {
-    price,
-    stock,
-    quantity,
-    totalPrice,
-    note,
-    address,
-    username,
-    orderStatus,
-    phoneNumber,
-  } = req.body;
-
+  const condition = { orderCode: req.params.orderCode };
+  const update = req.body;
   try {
-    const orderData = await Order.findOneAndUpdate(
-      { _id: req.params._id },
-      {
-        $set: {
-          price,
-          stock,
-          quantity,
-          totalPrice,
-          note,
-          address,
-          username,
-          orderStatus,
-          phoneNumber,
-        },
-      },
-      { new: true }
-    ).exec();
-    return res.status(200).json({
-      orderData,
-    });
+    const order = await Order.findOneAndUpdate(condition, update,{new: true}).exec();
+    res.json({order});
   } catch (error) {
-    res.send.json({
-      message: "cập nhật thông tin đơn hàng thất bại",
+    res.status(400).json({
+      error: "update order không thành công",
     });
   }
 };
+
+export const removeOrder = async (req, res) => {
+  try {
+    const order = await Order.findOneAndDelete({ id: req.params._id });
+    return res.status(200).json({
+      order,
+    });
+  } catch (error) {}
+};
+
+// export const changeOrderStatus = async (req, res) => {
+//   const condition = { orderCode: req.params.orderCode };
+//   try {
+//     const order = await Order.findOneAndUpdate(condition, {
+//       orderStatus: req.body
+//     },{new: true}).exec();
+//     res.json({order});
+//   } catch (error) {
+//     res.status(400).json({
+//       error: "update status không thành công",
+//     });
+//   }
+// };

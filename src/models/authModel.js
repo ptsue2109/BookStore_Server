@@ -3,15 +3,16 @@ import { createHmac } from "crypto";
 import { v4 as uuidv4 } from 'uuid';
 const userSchema = new Schema({
    email: { type: String, required: true, unique: true },
-   password: { type: String, required: true },
-   username: { type: String, required: true, maxlength: 100 },
-   phoneNumber: { type: String, maxlength: 20,required: true, unique: true},
+   password: { type: String,},
+   username: { type: String,  maxlength: 100 },
+   phoneNumber: { type: String, maxlength: 20,unique: true},
    address: { type: String },
    desc: { type: String },
    role: { type: String, default: 'user' },
    salt: { type: String },
    image: {type: String},
-   status: {type: String, default: "active"}
+   status: {type: String, default: "active"},
+   provider:{type: String}
 }, { timestamps: true });
 
 userSchema.pre("save", function (next) {

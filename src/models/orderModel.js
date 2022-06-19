@@ -10,12 +10,13 @@ const cartSchema = new mongoose.Schema(
     },
     username: { type: String },
     phoneNumber: { type: String },
-    address: { type: String },
+    address: { type: String,default:'' },
+    email:{type:String, default: ''},
     products: [
       {
         products: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Products",
+          ref: "Product",
         },
         orderQuantity: {
           type: Number,
@@ -25,7 +26,6 @@ const cartSchema = new mongoose.Schema(
         },
       },
     ],
-  
     userInfo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

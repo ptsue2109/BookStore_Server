@@ -89,7 +89,23 @@ export const update = async (req, res) => {
     res.json(sliders);
   } catch (error) {
     res.status(400).json({
-      error: "update  không thành công",
+      error: `update  không thành công,${error}`,
     });
   }
 };
+
+
+export const getBookByCateName = async (req, res) => {
+  try {
+    const category = await Category.find({  }).exec();
+    const products = await Product.find({ categoryId: category })
+      .populate(["categoryId"])
+      .exec();
+    res.status(200).json({
+      category,
+      products,
+    });
+  } catch (error) {
+    res.status(500).send("Lấy sản phẩm thất bại");
+  }
+}
