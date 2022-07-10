@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import nodemailer from 'nodemailer'
+import { OAuth2Client } from 'google-auth-library'
 import userRoute from "./routes/authRouter";
 import productRoute from "./routes/productRoute";
 import targetRoute from "./routes/targetRouter";
@@ -15,7 +17,7 @@ import OrderRoute from "./routes/orderRoute"
 const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:3000'],
     "methods": "GET,PUT,POST,DELETE,PATCH",
     "preflightContinue": false,
     "optionsSuccessStatus": 204,
@@ -26,6 +28,7 @@ app.use(cors(corsOptions));
 app.use(morgan('tiny'))
 app.use(express.json({ limit: "50mb" }))
 
+// 
 
 mongoose.connect("mongodb://localhost:27017/angular_bookstore")
     .then(() => console.log("Connecting to db"))
