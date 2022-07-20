@@ -1,7 +1,6 @@
 const express = require("express");
-import { Add } from './../controllers/authCtrler';
 const router = express.Router();
-const { Resgister, Login, List,removeUser ,update,getDetail} = require ("../controllers/authCtrler");
+const { Resgister, Login, List,removeUser ,update,getDetail,Add} = require ("../controllers/authCtrler");
 
 router.post("/register", Resgister);
 router.post("/login", Login);

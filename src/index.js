@@ -1,14 +1,15 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import mongoose from 'mongoose';
+const express = require("express");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-import userRoute from "./routes/authRouter";
-import productRoute from "./routes/productRoute";
-import slideRoute from "./routes/slidersRouter";
-import CateRoute from "./routes/categoryRoute";
-import OrderRoute from "./routes/orderRoute";
-import BrandRoute from "./routes/brandRoute"
+const cors = require("cors");
+const userRoute = require ("./routes/authRouter");
+
+const productRoute =require("./routes/productRoute");
+const slideRoute =require("./routes/slidersRouter");
+const CateRoute =require("./routes/categoryRoute");
+const OrderRoute =require("./routes/orderRoute");
+const BrandRoute =require("./routes/brandRoute")
 const app = express();
 
 // const corsOptions = {
