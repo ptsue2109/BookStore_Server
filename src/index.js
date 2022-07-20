@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-
+const dotenv = require("dotenv");
 import userRoute from "./routes/authRouter";
 import productRoute from "./routes/productRoute";
 import slideRoute from "./routes/slidersRouter";
@@ -22,13 +22,9 @@ require('dotenv').config()
 app.use(cors());
 app.use(morgan('tiny'))
 app.use(express.json({ limit: "50mb" }))
-
+dotenv.config({ path: __dirname + "/configs/settings.env" });
 // 
-
-mongoose.connect("mongodb+srv://reacECM:reacECM@cluster0reacrecm.pwthk.mongodb.net/?retryWrites=true&w=majority")
-    .then(() => console.log("Connecting to db"))
-    .catch(err => console.log("Error connecting to db"))
-
+mongoose.connect(process.env.MONGODB_ONLINE).then(() => console.log("MONGODB connected successfully")).catch((error) => console.log(error));
 app.use("/", userRoute);
 app.use("/", productRoute);
 app.use("/", slideRoute);
