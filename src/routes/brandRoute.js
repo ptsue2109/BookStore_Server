@@ -5,7 +5,9 @@ const {
     getAll,
     getDetailBySlug,
     removeItem,
-    getAllActive,getDetail,update
+    getAllActive,
+    getDetail,
+    update
 } = require("../controllers/brandCtrler");
 
 

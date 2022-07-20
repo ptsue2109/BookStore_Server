@@ -1,4 +1,4 @@
-const Category = require("../models/CategoryModel");
+const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
 module.exports = {
   addnew: async (req, res) => {
@@ -86,7 +86,7 @@ module.exports = {
       const cate = await Category.findOneAndUpdate(condition, update, {
         new: true,
       }).exec();
-      res.json(sliders);
+      res.json(cate);
     } catch (error) {
       res.status(400).json({
         error: `update  không thành công,${error}`,

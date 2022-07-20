@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Sliders = new mongoose.Schema({
+const Sliders = mongoose.Schema({
     slideName: { type: String, required: true },
     URL: { type: String },
     image: {type: String}

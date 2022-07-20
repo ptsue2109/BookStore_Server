@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-import slug from "mongoose-slug-generator";
+const slug= require("mongoose-slug-generator");
 
 const Category = new mongoose.Schema({
     cateName: { type: String, required: true },
