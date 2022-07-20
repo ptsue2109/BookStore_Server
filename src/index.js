@@ -2,18 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-// import nodemailer from 'nodemailer'
-// import { OAuth2Client } from 'google-auth-library'
+
 import userRoute from "./routes/authRouter";
 import productRoute from "./routes/productRoute";
-import targetRoute from "./routes/targetRouter";
 import slideRoute from "./routes/slidersRouter";
 import CateRoute from "./routes/categoryRoute";
-import HomeRoute from "./routes/homeRoute";
-import BookSize from "./routes/bookSizeRoute";
-import BookType from "./routes/bookTypeRoute";
-import AuthorRoute from "./routes/authorRoute";
-import OrderRoute from "./routes/orderRoute"
+import OrderRoute from "./routes/orderRoute";
+import BrandRoute from "./routes/brandRoute"
 const app = express();
 
 // const corsOptions = {
@@ -30,20 +25,17 @@ app.use(express.json({ limit: "50mb" }))
 
 // 
 
-mongoose.connect("mongodb://localhost:27017/angular_bookstore")
+mongoose.connect("mongodb+srv://phuongthaotrinh:phuongthaotrinh@beangular.mph64.mongodb.net/?retryWrites=true&w=majority")
     .then(() => console.log("Connecting to db"))
     .catch(err => console.log("Error connecting to db"))
 
 app.use("/", userRoute);
 app.use("/", productRoute);
-app.use("/", targetRoute);
 app.use("/", slideRoute);
 app.use("/", CateRoute);
-app.use("/", HomeRoute);
-app.use("/",BookSize);
-app.use("/",BookType);
-app.use("/",AuthorRoute);
-app.use("/",OrderRoute);
+// app.use("/", HomeRoute);
+// app.use("/",OrderRoute);
+app.use("/",BrandRoute)
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

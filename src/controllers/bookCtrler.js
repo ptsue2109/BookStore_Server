@@ -25,11 +25,9 @@ export const addProduct = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const items = await Product.find({})
-      .populate("targetId")
       .populate("categoryId")
-      .populate("bookTypeId")
-      .populate("bookSizeId")
-      .populate("authorId")
+      .populate("brandId")
+
       .exec();
     return res.status(200).json({
       items
@@ -45,11 +43,8 @@ export const getAll = async (req, res) => {
 export const getDetail = async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id })
-      .populate("targetId")
       .populate("categoryId")
-      .populate("bookTypeId")
-      .populate("bookSizeId")
-      .populate("authorId")
+      .populate("brandId")
       .exec();
     return res.status(200).json(product);
   } catch (error) {
@@ -62,11 +57,8 @@ export const getDetail = async (req, res) => {
 export const getDetailBySlug = async (req, res) => {
   try {
     const product = await Product.findOne({ slug: req.params.slug })
-      .populate("targetId")
       .populate("categoryId")
-      .populate("bookTypeId")
-      .populate("bookSizeId")
-      .populate("authorId")
+      .populate("brandId")
       .exec();
     return res.status(200).json(product);
   } catch (error) {

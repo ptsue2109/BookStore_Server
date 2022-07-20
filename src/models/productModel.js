@@ -3,17 +3,11 @@ import slug from "mongoose-slug-generator";
 const { ObjectId } = mongoose.Types;
 const productSchema = new mongoose.Schema({
     name: {type:String,required:true},
-    image:  {type:String},
-    imageMutiple: {type: Object},
-    authorId: {type: ObjectId, ref: "Author"},
-    targetId: {type: ObjectId, ref: "Target"},
-    bookSizeId: {type: ObjectId, ref: "BookSize"},
-    bookTypeId: {type: ObjectId, ref: "BookType"},
-    bookWeight: {type: Number},
-    pageNumber:  {type: Number},
+    image:  {type:Object},
+    brandId: {type: ObjectId, ref: "Brand"},
+    categoryId: {type: ObjectId, ref: "Category"},
     cost: {type: Number},
     desc: {type: String},
-    categoryId: {type: ObjectId, ref: "Category"},
     slug: {type: String, slug: 'name', unique: true},
     stock : {type: Number, required: true}
 },{timestamps: true})
