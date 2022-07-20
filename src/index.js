@@ -25,7 +25,7 @@ app.use(express.json({ limit: "50mb" }))
 
 // 
 
-mongoose.connect("mongodb+srv://phuongthaotrinh:phuongthaotrinh@beangular.mph64.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://reacECM:reacECM@cluster0reacrecm.pwthk.mongodb.net/?retryWrites=true&w=majority")
     .then(() => console.log("Connecting to db"))
     .catch(err => console.log("Error connecting to db"))
 
