@@ -32,8 +32,7 @@ export const getAll = async (req, res) => {
       .populate("authorId")
       .exec();
     return res.status(200).json({
-      message: "Load success",
-      items,
+      items
     });
   } catch (error) {
     res.status(401).json({
