@@ -3,7 +3,7 @@ const slug = require ("mongoose-slug-generator");
 
 const Brand = new mongoose.Schema({
     brandName: { type: String, required: true },
-    image: { type: String },
+    image: { type:Object, required:true },
     status: { type: String, enum: ["active", "hidden"],default:"active" },
     slug: { type: String, slug: 'brandName', unique: true },
 },{timestamps:true})

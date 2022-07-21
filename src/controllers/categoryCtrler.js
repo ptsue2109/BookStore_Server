@@ -1,26 +1,41 @@
 const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
+const { cloudinaryBase64Upload } = require("../utils/cloundinay");
 module.exports = {
   addnew: async (req, res) => {
     try {
-      const news = await new Category(req.body).save();
-      return res.status(200).json({
-        mess: "add success",
-        news,
-      });
+      const { cateName, image, status, desc } = req.body;
+      const check = await Category.findOne({ cateName }).exec();
+      if (check) {
+        return res.json({ message: "Danh muc da ton tai" })
+      } else {
+        const imageList = [];
+        for (const imageItem of image) {
+          const imageFile = await cloudinaryBase64Upload(imageItem.base64);
+          imageList.push(imageFile);
+        }
+        const categories = await new Category({
+          cateName, 
+          image: imageList,
+          status,
+          desc
+        }).save();
+        return res.status(200).json({
+          categories,
+        });
+      }
     } catch (error) {
-      return res.status(401).json({
-        message: `Created faile cus ${error}`,
+      return res.status(200).json({
+        message: `FAIL:  ${error}`,
       });
     }
   },
 
   getAll: async (req, res) => {
     try {
-      const categories = await Category.find({}).exec();
+      const data = await Category.find({}).exec();
       return res.status(200).json({
-        mess: "load success",
-        categories,
+        data,
       });
     } catch (error) {
       return res.status(401).json({
@@ -47,14 +62,14 @@ module.exports = {
     const condition = { slug: req.params.slug };
     try {
       const category = await Category.findOne(condition).exec();
-      const books = await Product.find({
+      const products = await Product.find({
         categoryId: category._id,
       })
         .populate(["categoryId"])
         .exec();
       res.status(200).json({
         category,
-        books,
+        products,
       });
     } catch (error) {
       console.log(error);

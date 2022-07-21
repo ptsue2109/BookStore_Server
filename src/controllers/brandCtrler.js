@@ -1,16 +1,36 @@
 const Brand = require("../models/brandModel");
 const Product = require("../models/productModel");
+const { cloudinaryBase64Upload } = require("../utils/cloundinay");
 
 module.exports = {
   addnew: async (req, res) => {
     try {
-      const brands = await new Brand(req.body).save();
-      return res.status(200).json({
-        brands,
-      });
+      const { brandName, image, status } = req.body;
+
+      const check = await Brand.findOne({ brandName });
+      if (check) {
+        return res.status(401).json({ message: "Thương hiệu đã tồn tại" })
+      } else {
+        const imageList = [];
+        for (const imageItem of image) {
+          const imageFile = await cloudinaryBase64Upload(imageItem.base64);
+          imageList.push(imageFile);
+        }
+
+        const brands = await new Brand({
+          brandName,
+          image: imageList,
+          status
+        }
+        ).save();
+        return res.status(200).json({
+          brands
+        });
+      }
+
     } catch (error) {
       return res.status(401).json({
-        message: `Created faile cus ${error}`,
+        message: `Lỗi:  ${error}`,
       });
     }
   },
@@ -47,8 +67,8 @@ module.exports = {
     try {
       const Brand = await Brand.findOne(condition).exec();
       const products = await Product.find({
-          BrandId: Brand._id,
-        })
+        BrandId: Brand._id,
+      })
         .populate(["BrandId"])
         .exec();
       res.status(200).json({
@@ -62,8 +82,8 @@ module.exports = {
   removeItem: async (req, res, next) => {
     try {
       const cate = await Brand.deleteOne({
-          _id: req.params.id
-        })
+        _id: req.params.id
+      })
         .then((data) => res.json(data))
         .catch(next);
     } catch (error) {
@@ -73,8 +93,8 @@ module.exports = {
   getDetail: async (req, res) => {
     try {
       const cate = await Brand.findOne({
-          _id: req.params.id
-        })
+        _id: req.params.id
+      })
         .exec()
         .then((data) => res.json(data));
     } catch (error) {
@@ -97,16 +117,17 @@ module.exports = {
       });
     }
   },
-  getBookByCateName: async (req, res) => {
+  getProductByBrandName: async (req, res) => {
+    const condition = { slug: req.params.slug };
     try {
-      const Brand = await Brand.find({}).exec();
+      const brand = await Brand.findOne(condition).exec();
       const products = await Product.find({
-          BrandId: Brand
-        })
-        .populate(["BrandId"])
+        brandId: brand._id,
+      })
+        .populate(["brandId"])
         .exec();
       res.status(200).json({
-        Brand,
+        brand,
         products,
       });
     } catch (error) {

@@ -19,5 +19,5 @@ router.get("/categories/get-detail-by-slug/:slug", getDetailBySlug);
 router.delete("/categories/remove-cate/:id", removeItem)
 router.get("/categories/get-cate-by-id/:id", getDetail)
 router.patch("/categories/update-cate/:id", update)
-router.get("/categories/get-book-by-type/:cateName", getBookByCateName)
+router.get("/categories/get-product-by-name/:cateName", getBookByCateName)
 module.exports = router;

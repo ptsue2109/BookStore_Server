@@ -3,8 +3,9 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cloudinary = require("cloudinary");
 const userRoute = require("./routes/authRouter");
-
+const HomeRoute = require("./routes/homeRoute");
 const productRoute = require("./routes/productRoute");
 const slideRoute = require("./routes/slidersRouter");
 const CateRoute = require("./routes/categoryRoute");
@@ -30,8 +31,15 @@ dotenv.config({
   path: __dirname + "/configs/settings.env",
 });
 //
+cloudinary.config({
+  cloud_name: "asm-ph13269",
+  api_key: "449723454328925",
+  api_secret: "1UV_RDivk2CaWxn38szYuKovhH8",
+});
+
+
 mongoose
-  .connect(process.env.MONGODB_ONLINE)
+  .connect("mongodb://localhost:27017/ecmServer")
   .then(() => console.log("MONGODB connected successfully"))
   .catch((error) => console.log(error));
   
@@ -40,6 +48,7 @@ app.use("/", productRoute);
 app.use("/", slideRoute);
 app.use("/", CateRoute);
 app.use("/", BrandRoute);
+app.use("/", HomeRoute);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

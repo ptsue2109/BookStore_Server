@@ -7,7 +7,8 @@ const {
     removeItem,
     getAllActive,
     getDetail,
-    update
+    update,
+    getProductByBrandName
 } = require("../controllers/brandCtrler");
 
 
@@ -18,5 +19,5 @@ router.get("/brands/get-detail-by-slug/:slug", getDetailBySlug);
 router.delete("/brands/remove-brands/:id", removeItem)
 router.get("/brands/get-brands-by-id/:id", getDetail)
 router.patch("/brands/update-brands/:id", update)
-// router.get("/brands/get-book-by-type/:brandName", getBookByCateName)
+router.get("/brands/get-products-by-slug/:slug",getProductByBrandName)
 module.exports = router;
