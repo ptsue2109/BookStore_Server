@@ -95,22 +95,42 @@ module.exports = {
       .then((data) => res.json(data))
       .catch(next);
   },
-  update: async (req, res) => {
-    const condition = {
-      _id: req.params.id,
-    };
-    const update = req.body;
+   update: async (req, res) => {
     try {
-      const product = await Product.findOneAndUpdate(condition, update, {
-        new: true,
-      }).exec();
-      res.json(product);
+        const { name, image, price, cost,stock, desc, isFeature, categoryId, brandId } = req.body;
+
+        const imageList = [];
+        for (const imageItem of image) {
+            if (imageItem.base64) {
+                const imageFile = await cloudinaryBase64Upload(imageItem.base64);
+                imageList.push(imageFile);
+            } else {
+                imageList.push(imageItem);
+            }
+        }
+
+        const product = await Product.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $set: {
+                    name,
+                    image: imageList,
+                    desc,
+                    isFeature,
+                    categoryId,
+                    brandId,
+                    price,
+                    cost,
+                    stock
+                },
+            },
+            { new: true }
+        ).exec();
+        return res.status(201).json(product);
     } catch (error) {
-      res.status(400).json({
-        error: `update sản phẩm không thành công ,${error}`,
-      });
+        return res.status(500).json({message: `Cập nhật sản phẩm thất bại: ${error}`});
     }
-  },
+},
   search: async (req, res) => {
     try {
       const query = req.query.q;

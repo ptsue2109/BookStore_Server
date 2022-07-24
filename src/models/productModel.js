@@ -10,7 +10,8 @@ const productSchema = new mongoose.Schema({
     desc: {type: String},
     slug: {type: String, slug: 'name', unique: true},
     stock : {type: Number, required: true},
-    price: {type: Number}
+    price: {type: Number},
+    isFeature: {type: Boolean, enum: [true, false],default:false}
 },{timestamps: true})
 
 mongoose.plugin(slug);
