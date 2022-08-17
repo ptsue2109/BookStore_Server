@@ -1,136 +1,195 @@
-// import Order from "../models/orderModel";
-// import Product from "../models/productModel";
-// import shortid from "shortid";
+import Order from "../models/orderModel";
+import Product from "../models/productModel";
+import User from "../models/authModel";
+import shortid from "shortid";
 
-// export const addToCart = async (req, res) => {
-//   try {
-//     let {
-//       username,
-//       phoneNumber,
-//       address,
-//       products,
-//       userInfo,
-//       note,
-//       orderQuantity,
-//       orderPrice,
-//       totalPrice,
-//     } = req.body;
+module.exports = {
+   addToCart: async (req, res) => {
+      try {
+         const {
+            address,
+            email,
+            username,
+            note,
+            phoneNumber,
+            products,
+            price,
+            users,
+            productCost,
+            productImage,
+            productName,
+            productURL,
+            stock,
+            totalPrice,
+         } = req.body;
 
-//     const newCart = await new Order({
-//       products,
-//       userInfo,
-//       note,
-//       username,
-//       phoneNumber,
-//       address,
-//       orderQuantity,
-//       orderPrice,
-//       totalPrice,
-//       orderCode: shortid.generate(),
-//     }).save();
+         let lstProducts = [];
+         for (let productItem of products) {
+            let objProduct = {};
+            objProduct.product = productItem.product;
+            objProduct.price = productItem.price;
+            objProduct.cost = productItem.cost;
+            objProduct.productCost = productItem.productCost;
+            objProduct.productImage = productItem.productImage;
+            objProduct.quantity = productItem.quantity;
+            objProduct.productName = productItem.productName;
+            objProduct.productURL = productItem.productURL;
+            objProduct.stock = productItem.stock;
+            lstProducts.push(objProduct);
+         }
 
-//     return res.status(200).json({
-//       newCart,
-//     });
-//   } catch (error) {
-//     return res.status(400).json({
-//       message: `Created faile cus ${error}`,
-//     });
-//   }
-// };
+         const order = new Order({
+            orderCode: shortid.generate(),
+            products: lstProducts,
+            price,
+            users,
+            shippingInfo: {
+               address,
+               email,
+               username,
+               note,
+               phoneNumber,
+            },
+            totalPrice,
+         }).save();
+         res.status(201).json(order);
+      } catch (error) {
+         return res.status(500).send("Đặt hàng thất bại");
+      }
+   },
 
-// export const listAllOrder = async (req, res) => {
-//   try {
-//     const order = await Order.find({}).populate("userInfo").exec();
-//     return res.status(200).json({
-//       order,
-//     });
-//   } catch (error) {
-//     return res.status(400).json({
-//       message: `loading fail : ${error}`,
-//     });
-//   }
-// };
+   listAllOrder: async (req, res) => {
+      try {
+         const orders = await Order.find({ deleted: false })
+            .populate("users")
+            .exec();
+         return res.status(200).json({
+            orders,
+         });
+      } catch (error) {
+         return res.status(400).json({
+            message: `loading fail : ${error}`,
+         });
+      }
+   },
+   listDeletedOrder: async (req, res) => {
+      try {
+         const orders = await Order.findWithDeleted({ deleted: true }).exec();
+         return res.status(200).json({
+            orders,
+         });
+      } catch (error) {
+         return res.status(400).json({
+            message: `loading fail : ${error}`,
+         });
+      }
+   },
+   // getUserOrder: async (req, res) => {
+   //    try {
+   //       const userInfo = await User.findOne({ users: req.params.id }).exec();
+   //       const orders = await Order.find({ users: userInfo._id }).exec();
+   //       res.status(200).json({
+   //          userInfo,
+   //          orders,
+   //       });
+   //    } catch (error) {
+   //       res.status(500).send(`Lấy sản phẩm thất bại ${error}`);
+   //    }
+   // },
+   getUserOrder: async (req, res) => {
+      try {
+         const userInfo = await User.findOne({ users: req.params.id }).exec();
+         const orderDeleted = await Order.findWithDeleted({ deleted: true, users:userInfo._id }).exec();
+         const orders = await Order.find({ users: userInfo._id }).exec();
+         res.status(200).json({
+            userInfo,
+            orders,
+            orderDeleted
 
-// export const getUserOrder = async (req, res) => {
-//   try {
-//     const orders = await Order.find({
-//       userInfo: req.params.id,
-//     })
-//       .populate(["products"])
-//       .exec();
-//     res.status(200).json({ orders: orders });
-//   } catch (error) {
-//     res.status(500).send("loading fail");
-//   }
-// };
+         });
+      } catch (error) {
+         res.status(500).send(`Lấy sản phẩm thất bại ${error}`);
+      }
+   },
+   getOrderByOrderCode: async (req, res) => {
+      try {
+         const cart = await Order.findOne({
+            orderCode: req.params.orderCode,
+         })
+            .populate("products.products")
+            .exec();
+         res.status(200).json(cart);
+      } catch (error) {
+         res.status(500).send("loading fail" + error);
+      }
+   },
+   getOrderByPhone: async (req, res) => {
+      const { phoneNumber } = req.params;
+      try {
+         const orders = await Order.find({ phoneNumber }).exec();
+         res.status(200).json({ orders });
+      } catch (error) {
+         res.status(500).send("load data fail");
+      }
+   },
 
-// export const getOrderByOrderCode = async (req, res) => {
-//   try {
-//     const cart = await Order.findOne({
-//       orderCode: req.params.orderCode,
-//     })
-//       .populate("products.products")
-//       .exec();
-//     res.status(200).json(cart);
-//   } catch (error) {
-//     res.status(500).send("loading fail" + error);
-//   }
-// };
+   getOrderById: async (req, res) => {
+      try {
+         const orders = await Order.findOne({ id: req.params._id }).exec();
+         return res.status(200).json({
+            orders,
+         });
+      } catch (error) {
+         res.status(500).send("get data fail");
+      }
+   },
+   changeOrderStatus: async (req, res) => {
+      try {
+         const order = await OrderModel.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+               ...req.body,
+            },
+            { $new: true }
+         );
+         res.status(201).json(order);
+      } catch (error) {
+         console.log(error);
+         res.status(500).json("Cập nhật thất bại");
+      }
+   },
 
-// export const getOrderByPhone = async (req, res) => {
-//   const { phoneNumber } = req.params;
-//   try {
-//     const orders = await Order.find({ phoneNumber }).exec();
-//     res.status(200).json({ orders });
-//   } catch (error) {
-//     res.status(500).send("load data fail");
-//   }
-// };
+   removeOrder: async (req, res) => {
+      try {
+         const order = await Order.findOneAndDelete({ id: req.params._id });
+         return res.status(200).json({
+            order,
+         });
+      } catch (error) { }
+   },
 
-// export const getOrderById = async (req, res) => {
-//   try {
-//     const orders = await Order.findOne({ id: req.params._id }).exec();
-//     return res.status(200).json({
-//       orders,
-//     });
-//   } catch (error) {
-//     res.status(500).send("get data fail");
-//   }
-// };
+   sorfDeleteOrder: async (req, res, next) => {
+      try {
+        
+         const orderDel = await Order.find({ _id: req.params.id }).exec();
+         const order = await Order.delete({ _id: req.params.id }).exec();
+         return res.status(200).json({ order, orderDel });
+      } catch (error) {
+         return res.status(400).json({
+            error: `Xoá sản phẩm  thất bại ${error}`,
+         });
+      }
+   },
 
-// export const changeOrder = async (req, res) => {
-//   const condition = { orderCode: req.params.orderCode };
-//   const update = req.body;
-//   try {
-//     const order = await Order.findOneAndUpdate(condition, update,{new: true}).exec();
-//     res.json({order});
-//   } catch (error) {
-//     res.status(400).json({
-//       error: "update order không thành công",
-//     });
-//   }
-// };
-
-// export const removeOrder = async (req, res) => {
-//   try {
-//     const order = await Order.findOneAndDelete({ id: req.params._id });
-//     return res.status(200).json({
-//       order,
-//     });
-//   } catch (error) {}
-// };
-
-// // export const changeOrderStatus = async (req, res) => {
-// //   const condition = { orderCode: req.params.orderCode };
-// //   try {
-// //     const order = await Order.findOneAndUpdate(condition, {
-// //       orderStatus: req.body
-// //     },{new: true}).exec();
-// //     res.json({order});
-// //   } catch (error) {
-// //     res.status(400).json({
-// //       error: "update status không thành công",
-// //     });
-// //   }
-// // };
+   restoreOrder: async (req, res) => {
+      try {
+         const order = await Order.restore({ _id: req.params.id }).exec();
+         const orderTarget = await Order.find({ _id: req.params.id }).exec();
+         return res.status(200).json({ order, orderTarget });
+      } catch (error) {
+         return res.status(400).json({
+            error: "Restore sản phẩm thất bại",
+         });
+      }
+   },
+};

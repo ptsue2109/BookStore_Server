@@ -10,6 +10,7 @@ const productRoute = require("./routes/productRoute");
 const slideRoute = require("./routes/slidersRouter");
 const CateRoute = require("./routes/categoryRoute");
 const BrandRoute = require("./routes/brandRoute");
+const OrderRoute  = require("./routes/orderRoute");
 const app = express();
 
 // const corsOptions = {
@@ -39,7 +40,8 @@ cloudinary.config({
 
 
 mongoose
-  .connect("mongodb://localhost:27017/ecmServer")
+//  .connect("mongodb://127.0.0.1:27017/ecmServer")
+   .connect("mongodb://127.0.0.1:27017/ecmServer")
   .then(() => console.log("MONGODB connected successfully"))
   .catch((error) => console.log(error));
   
@@ -49,8 +51,8 @@ app.use("/", slideRoute);
 app.use("/", CateRoute);
 app.use("/", BrandRoute);
 app.use("/", HomeRoute);
-
-const PORT = process.env.PORT || 5001;
+app.use("/",OrderRoute);
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
   console.log("Server is running on PORT:", PORT);
 });

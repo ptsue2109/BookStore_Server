@@ -89,11 +89,17 @@ module.exports = {
     }
   },
   remove: async (req, res, next) => {
-    const product = await Product.deleteOne({
-      _id: req.params.id,
-    })
-      .then((data) => res.json(data))
-      .catch(next);
+    try {
+      const product = await Product.findByIdAndDelete({
+        _id: req.params.id,
+      }).exec();
+      return res.status(200).json(product);
+    } catch (error) {
+      return res.json(400).send({
+        error: "Xoa sản phẩm thất bại",
+      });
+    }
+    
   },
    update: async (req, res) => {
     try {
@@ -141,10 +147,21 @@ module.exports = {
         },
       })
         .populate("categoryId")
+        .populate("brandId")
         .exec();
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json("Không tìm thấy kết quả");
+    }
+  },
+  getProductsSearch: async (req, res) => {
+    try {
+      const products = await Product.find({
+        name: { $regex: new RegExp(req.body.keyword), $options: "i" },
+      }).exec();
+      res.status(200).json(products);
+    } catch (error) {
+      res.status(500).send("Lấy danh sách sản phẩm thất bại");
     }
   },
 };

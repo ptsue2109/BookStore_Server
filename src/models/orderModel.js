@@ -1,45 +1,56 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const mongooseDelete = require('mongoose-delete');
+const mongooseDateFormat = require('mongoose-date-format');
+const orderSchema = new mongoose.Schema(
+  {
+    orderCode: {
+      type: String,
+      required: true,
+    },
+    products: [
+      {
+        product: {type: mongoose.Schema.Types.ObjectId, ref: "Product"},
+        productCost: {type: Number},
+        productImage: { type: String},
+        productName: { type: String},
+        productURL: { type: String},
+        cost:  {type: Number},
+        price: {type: Number},
+        quantity: {type: Number},
+        stock:{type: Number}
+      },
+    ],
+    users: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
+    status: {
+      type: String,
+      enum: ["pending", "confirm", "shipping", "done"],
+      default: "pending",
+    },
+    shippingInfo: {
+      username: {
+        type: String,
+      },
+      phoneNumber: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
+      address: {
+        type: String,
+      },
+      note: {
+        type: String,
+      },
+    },
+    totalPrice :{type: Number}
+  },
+  { timestamps: true }
+);
 
-// const cartSchema = new mongoose.Schema(
-//   {
-//     orderCode: { type: String },
-//     orderStatus: {
-//       type: String,
-//       enum: ["pending", "confirm", "delivered", "done", "close"],
-//       default: "pending",
-//     },
-//     username: { type: String },
-//     phoneNumber: { type: String },
-//     address: { type: String,default:'' },
-//     email:{type:String, default: ''},
-//     products: [
-//       {
-//         products: {
-//           type: mongoose.Schema.Types.ObjectId,
-//           ref: "Product",
-//         },
-//         orderQuantity: {
-//           type: Number,
-//         },
-//         orderPrice: {
-//           type: Number,
-//         },
-//       },
-//     ],
-//     userInfo: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User",
-//     },
-
-//     totalPrice: {
-//       type: Number,
-//     },
-//     storeNote: { type: String, default: "" },
-//     note: {
-//       type: String,
-//     },
-//   },
-//   { timestamps: true }
-// );
-
-// module.exports = mongoose.model("Cart", cartSchema);
+orderSchema.plugin(mongooseDelete,{ deletedAt: true, overrideMethods: 'all' });
+orderSchema.plugin(mongooseDateFormat);
+module.exports = mongoose.model("Order", orderSchema);

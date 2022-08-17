@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
    desc: { type: String },
    role: { type: String, default: 'user' },
    salt: { type: String },
-   image: {type: String},
+   image: {type: Object},
    status: {type: String, default: "active"},
    provider:{type: String}
 }, { timestamps: true });

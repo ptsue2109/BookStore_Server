@@ -8,6 +8,7 @@ const {
   getDetailBySlug,
   update,
   search
+  
 } = require("../controllers/bookCtrler");
 
 router.get("/products/find-book-by-slug/:slug", getDetailBySlug);
@@ -16,5 +17,5 @@ router.get("/products", getAll);
 router.post("/products/create", addProduct);
 router.delete("/products/remove-book/:id", remove);
 router.patch("/products/update-book/:id", update);
-router.get("/search", search);
+router.post("/search", search);
 module.exports = router;

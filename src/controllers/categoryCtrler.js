@@ -75,12 +75,10 @@ module.exports = {
       console.log(error);
     }
   },
-
   removeItem: async (req, res, next) => {
     try {
-      const cate = await Category.deleteOne({ _id: req.params.id })
-        .then((data) => res.json(data))
-        .catch(next);
+      const category = await Category.findByIdAndDelete({ _id: req.params.id }).exec();
+      return res.status(200).json(category);
     } catch (error) {
       res.status(400).send(`Delete failed ${error.message}`);
     }

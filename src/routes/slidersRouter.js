@@ -3,8 +3,8 @@ const router = express.Router();
 const {addnew,getAll,removeItem,getDetail,update} = require ("../controllers/slidersCtrler.js");
 
 router.get("/sliders", getAll);
-router.post("/sliders", addnew);
-router.delete("/sliders/:id",removeItem)
-router.get("/sliders/:id",getDetail)
-router.patch("/sliders/:id",update)
+router.post("/sliders/create", addnew);
+router.delete("/sliders/remove/:id",removeItem)
+router.get("/sliders/get-detail/:id",getDetail)
+router.patch("/sliders/update/:id",update)
 module.exports = router;   

@@ -1,25 +1,43 @@
 
 const Sliders = require("../models/slidersModels");
+const { cloudinaryBase64Upload } = require("../utils/cloundinay");
+
 module.exports = {
     addnew : async(req,res) =>{
         try {
-            const news = await new  Sliders(req.body).save();
+            const { slideName, image, URL,status } = req.body;
+            const check = await Sliders.findOne({ slideName }).exec();
+            if (check) {
+                return res.status(400).json({
+                    message: "slider da ton tai",
+                  });
+            } else {
+              const imageList = [];
+              for (const imageItem of image) {
+                const imageFile = await cloudinaryBase64Upload(imageItem.base64);
+                imageList.push(imageFile);
+              }
+              const sliders = await new Sliders({
+                slideName, 
+                image: imageList,
+                status,
+                URL
+              }).save();
+              return res.status(200).json({
+                sliders
+              });
+            }
+          } catch (error) {
             return res.status(200).json({
-                mess: "add success",
-                news
-            })
-        } catch (error) {
-                return res.status(401).json({
-                    message: `Created faile cus ${error}`
-                })
-        }
+              message: `FAIL:  ${error}`,
+            });
+          }
     } , 
     getAll : async(req,res) =>{
         try {
-            const item = await Sliders.find({}).exec();
+            const sliders = await Sliders.find({}).exec();
             return res.status(200).json({
-                mess: "load success",
-                item
+                sliders
             })
         } catch (error) {
             return res.status(401).json({
@@ -29,12 +47,11 @@ module.exports = {
     },
     removeItem : async (req, res, next) => {
         try {
-            const user = await Sliders.deleteOne({ _id: req.params.id })
-                .then((data) => res.json(data))
-                .catch(next)
-        } catch (error) {
+            const sliders = await Sliders.findByIdAndDelete({ _id: req.params.id }).exec();
+            return res.status(200).json(sliders);
+          } catch (error) {
             res.status(400).send(`Delete failed ${error.message}`);
-        }
+          }
     },
     getDetail : async (req, res) => {
         try {

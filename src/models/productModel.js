@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slug = require("mongoose-slug-generator");
+
 const { ObjectId } = mongoose.Types;
 const productSchema = new mongoose.Schema({
     name: {type:String,required:true},
