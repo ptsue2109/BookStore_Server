@@ -1,5 +1,5 @@
 
-const Sliders = require("../models/slidersModels");
+const Sliders = require("../models/sliders");
 const { cloudinaryBase64Upload } = require("../utils/cloundinay");
 
 module.exports = {

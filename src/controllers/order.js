@@ -1,6 +1,6 @@
-import Order from "../models/orderModel";
-import Product from "../models/productModel";
-import User from "../models/authModel";
+import Order from "../models/order";
+import Product from "../models/product";
+import User from "../models/auth";
 import shortid from "shortid";
 
 module.exports = {

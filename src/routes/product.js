@@ -9,7 +9,7 @@ const {
   update,
   search
   
-} = require("../controllers/bookCtrler");
+} = require("../controllers/product");
 
 router.get("/products/find-book-by-slug/:slug", getDetailBySlug);
 router.get("/products/find-book-by-id/:id", getDetail);

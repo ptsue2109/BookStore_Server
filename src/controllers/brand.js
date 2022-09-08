@@ -1,5 +1,5 @@
-const Brand = require("../models/brandModel");
-const Product = require("../models/productModel");
+const Brand = require("../models/brand");
+const Product = require("../models/product");
 const { cloudinaryBase64Upload } = require("../utils/cloundinay");
 
 module.exports = {

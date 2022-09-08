@@ -12,7 +12,7 @@ const {
   restoreOrder,
   listDeletedOrder,
   // getUserOrderDelete
-} = require("../controllers/orderController");
+} = require("../controllers/order");
 
 router.post("/orders/creat-by-custom", addToCart);
 router.get("/orders", listAllOrder);

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {addnew,getAll,removeItem,getDetail,update} = require ("../controllers/slidersCtrler.js");
+const {addnew,getAll,removeItem,getDetail,update} = require ("../controllers/slider");
 
 router.get("/sliders", getAll);
 router.post("/sliders/create", addnew);

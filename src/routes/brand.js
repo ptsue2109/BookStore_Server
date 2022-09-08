@@ -9,7 +9,7 @@ const {
     getDetail,
     update,
     getProductByBrandName
-} = require("../controllers/brandCtrler");
+} = require("../controllers/brand");
 
 
 router.post("/brands/create", addnew);

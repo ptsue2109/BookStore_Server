@@ -9,7 +9,7 @@ const {
     getDetail,
     Add,
     updatePassword
-} = require("../controllers/authCtrler");
+} = require("../controllers/auth");
 
 router.post("/register", Resgister);
 router.post("/login", Login);

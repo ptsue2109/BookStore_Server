@@ -1,5 +1,5 @@
 import { cloudinaryBase64Upload } from "../utils/cloundinay";
-const Product = require("../models/productModel");
+const Product = require("../models/product");
 
 
 module.exports = {

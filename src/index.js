@@ -4,22 +4,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cloudinary = require("cloudinary");
-const userRoute = require("./routes/authRouter");
-const HomeRoute = require("./routes/homeRoute");
-const productRoute = require("./routes/productRoute");
-const slideRoute = require("./routes/slidersRouter");
-const CateRoute = require("./routes/categoryRoute");
-const BrandRoute = require("./routes/brandRoute");
-const OrderRoute  = require("./routes/orderRoute");
+const userRoute = require("./routes/auth");
+const HomeRoute = require("./routes/home");
+const productRoute = require("./routes/product");
+const slideRoute = require("./routes/sliders");
+const CateRoute = require("./routes/category");
+const BrandRoute = require("./routes/brand");
+const OrderRoute  = require("./routes/order");
 const app = express();
 
-// const corsOptions = {
-//     origin: ['http://localhost:4200'],
-//     "methods": "GET,PUT,POST,DELETE,PATCH",
-//     "preflightContinue": false,
-//     "optionsSuccessStatus": 204,
-//     credentials: true
-// };
 require("dotenv").config();
 app.use(cors());
 app.use(morgan("tiny"));

@@ -1,4 +1,4 @@
-const User = require("../models/authModel");
+const User = require("../models/auth");
 import { cloudinaryBase64Upload } from "../utils/cloundinay";
 module.exports = {
   Resgister: async (req, res) => {

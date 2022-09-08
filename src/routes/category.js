@@ -9,7 +9,7 @@ const {
     update,
     getAllActive,
     getBookByCateName
-} = require("../controllers/categoryCtrler");
+} = require("../controllers/category");
 
 
 router.post("/categories/create", addnew);

@@ -1,5 +1,5 @@
-const Category = require("../models/categoryModel");
-const Product = require("../models/productModel");
+const Category = require("../models/category");
+const Product = require("../models/product");
 const { cloudinaryBase64Upload } = require("../utils/cloundinay");
 module.exports = {
   addnew: async (req, res) => {

@@ -1,8 +1,8 @@
-const Product = require("../models/productModel");
-const User = require("../models/authModel");
-const Brand = require("../models/brandModel");
-const Category = require("../models/categoryModel");
-const Sliders = require("../models/slidersModels")
+const Product = require("../models/product");
+const User = require("../models/auth");
+const Brand = require("../models/brand");
+const Category = require("../models/category");
+const Sliders = require("../models/sliders")
 module.exports = {
   getHomeData: async (req, res) => {
     try {
